@@ -2,7 +2,7 @@
 
 
 #include "Ennemy.h"
-#include "Engine/GameEngine.h" //print
+#include "Engine/GameEngine.h" //AddOnScreenDebugMessage
 #include "UObject/ScriptDelegates.h"
 
 // Sets default values
@@ -22,18 +22,12 @@ AEnnemy::AEnnemy()
 }
 
 void AEnnemy::SeeAndTryToChassThePlayerCallBack(AActor* Actor, FAIStimulus Stimulus)
-{
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
-}
+{}
 
 // Called when the game starts or when spawned
 void AEnnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
 }
 
 // Called every frame

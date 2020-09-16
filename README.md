@@ -3,13 +3,13 @@ Projet UE4 GP2
 
 ## TODO (French) : 
 ### Caméra :
-- [ ] Le joueur contrôle une third-person camera avec la souris
-- [ ] La caméra ne doit pas rentrer dans le décors
-- [ ] La caméra ne doit effectuer aucun test de collision avec des ennemis (cela aurait pour effet de la rapprocher de très près du joueur lorsqu'un ennemi attaque, ce qui n'est pas pratique du point de vue du jeu)
+- [x] Le joueur contrôle une third-person camera avec la souris
+- [x] La caméra ne doit pas rentrer dans le décors
+- [x] La caméra ne doit effectuer aucun test de collision avec des ennemis (cela aurait pour effet de la rapprocher de très près du joueur lorsqu'un ennemi attaque, ce qui n'est pas pratique du point de vue du jeu)
 
 ### Player :
-- [ ] le joueur peut déplacer son personnage dans l'environnement en utilisant Z, S,Q, D (qui déplace le personnage du joueur en avant, à gauche, en arrière, à droite dans la référence de la caméra)
-- [ ] Le personnage du joueur doit toujours s’orienter dans la direction dans laquelle il se déplace, il ne doit jamais strafe, ni reculer.
+- [x] le joueur peut déplacer son personnage dans l'environnement en utilisant Z, S,Q, D (qui déplace le personnage du joueur en avant, à gauche, en arrière, à droite dans la référence de la caméra)
+- [x] Le personnage du joueur doit toujours s’orienter dans la direction dans laquelle il se déplace, il ne doit jamais strafe, ni reculer.
 - [ ] Le joueur commence avec 5 points de la vie (cette valeur devrait être facilement ajustable dans l'éditeur)
 
 ### Player attaque :

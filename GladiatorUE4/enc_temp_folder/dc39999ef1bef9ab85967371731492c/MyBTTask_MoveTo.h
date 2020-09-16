@@ -15,8 +15,6 @@ class GLADIATORUE4_API UMyBTTask_MoveTo : public UBTTask_BlackboardBase
 
 	void TickTask (UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) final;
 
-	bool isInsidZone(UBehaviorTreeComponent& OwnerComp);
-
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	FBlackboardKeySelector m_rangeZoneToStop;
 

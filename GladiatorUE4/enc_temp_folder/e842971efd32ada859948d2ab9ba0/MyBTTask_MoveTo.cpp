@@ -10,71 +10,62 @@
 
 EBTNodeResult::Type UMyBTTask_MoveTo::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	const bool rst = isInsidZone(OwnerComp);
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(m_flagZoneToStop.SelectedKeyName, rst);
-
-	if (rst)
+	if (OwnerComp.GetBlackboardComponent()->GetValueAsBool(m_flagZoneToStop.SelectedKeyName))
 	{
 		return EBTNodeResult::Succeeded;
 	}
 
-	bNotifyTick = true;
-	return EBTNodeResult::InProgress;
-}
-
-void UMyBTTask_MoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
-{
 	//Get self object and cast it to APawn
 	APawn* pSelfPawn = Cast<APawn>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("SelfActor"));
 	const float acceptableRadius = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(m_rangeZoneToStop.SelectedKeyName);
 
 	if (!pSelfPawn)
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		return EBTNodeResult::Failed;
 	}
 
 	AAIController* pAIController = Cast<AAIController>(pSelfPawn->GetController());
 
 	if (!pAIController)
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		return EBTNodeResult::Failed;
 	}
 
 	AActor* pEnnemyActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("EnnemyTarget"));
 
 	if (!pEnnemyActor)
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		return EBTNodeResult::Failed;
 	}
 
 	pAIController->MoveToActor(pEnnemyActor, acceptableRadius, m_stopOnOverlap, m_usePathfinding, m_canStrafe);
 
+	bNotifyTick = true;
 
-	const bool rst = isInsidZone(OwnerComp);
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(m_flagZoneToStop.SelectedKeyName, rst);
-	FinishLatentTask(OwnerComp, rst ? EBTNodeResult::Succeeded : EBTNodeResult::InProgress);
+	return EBTNodeResult::InProgress;
 }
 
-bool UMyBTTask_MoveTo::isInsidZone (UBehaviorTreeComponent& OwnerComp)
+void UMyBTTask_MoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	APawn* pSelfPawn = Cast<APawn>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("SelfActor"));
 	const float acceptableRadius = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(m_rangeZoneToStop.SelectedKeyName);
 
 	if (!pSelfPawn)
 	{
-		FinishLatentAbort(OwnerComp);
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 	}
 
 	AActor* pEnnemyActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("EnnemyTarget"));
 
 	if (!pEnnemyActor)
 	{
-		FinishLatentAbort(OwnerComp);
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 	}
 
 	const float zoneSize = OwnerComp.GetBlackboardComponent()->GetValueAsFloat("ZoneSize");
 	const float squaredDistWithEnnemy = (pEnnemyActor->GetActorLocation() - pSelfPawn->GetActorLocation()).SizeSquared();
 	const bool rst = squaredDistWithEnnemy <= (acceptableRadius + zoneSize) * (acceptableRadius + zoneSize);
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool(m_flagZoneToStop.SelectedKeyName, rst);
 
-	return rst;
+	FinishLatentTask(OwnerComp, rst ? EBTNodeResult::Succeeded : EBTNodeResult::InProgress);
 }
