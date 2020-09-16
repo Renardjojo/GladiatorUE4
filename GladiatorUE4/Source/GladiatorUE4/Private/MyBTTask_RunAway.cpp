@@ -35,6 +35,7 @@ EBTNodeResult::Type UMyBTTask_RunAway::ExecuteTask(UBehaviorTreeComponent& Owner
 	direction.Normalize();
 
 	pAIController->MoveToLocation((direction * acceptableRadius) + pSelfPawn->GetActorLocation());
+	pSelfPawn->bUseControllerRotationYaw = false;
 
 	bNotifyTick = true;
 
@@ -65,14 +66,17 @@ void UMyBTTask_RunAway::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 	}
 
+	//Alway face to the player
+	FRotator rotation = UKismetMathLibrary::FindLookAtRotation(pSelfPawn->GetActorLocation(), pEnnemyActor->GetActorLocation());
+	rotation = FRotator::MakeFromEuler(rotation.Euler() * FVector::UpVector);
+	pSelfPawn->SetActorRotation(rotation);
+
 	switch (pAIController->GetMoveStatus())
 	{
 		case EPathFollowingStatus::Idle:
 		{
-			FRotator rotation = UKismetMathLibrary::FindLookAtRotation(pSelfPawn->GetActorLocation(), pEnnemyActor->GetActorLocation());
-			rotation = FRotator::MakeFromEuler(rotation.Euler() * FVector::UpVector);
-			pSelfPawn->SetActorRotation(rotation);
 			OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnFightingZone", false);
+			pSelfPawn->bUseControllerRotationYaw = true;
 			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 			break;
 		}

@@ -20,10 +20,10 @@ class AGladiatorUE4Character : public ACharacter
 	class UCameraComponent* FollowCamera;
 
 	/*life*/
-	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	uint8 m_life;
 
-	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	uint8 m_maxLife;
 
 public:

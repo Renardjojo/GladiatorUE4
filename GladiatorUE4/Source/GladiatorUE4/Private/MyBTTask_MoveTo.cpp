@@ -49,7 +49,6 @@ void UMyBTTask_MoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 	pAIController->MoveToActor(pEnnemyActor, acceptableRadius, m_stopOnOverlap, m_usePathfinding, m_canStrafe);
 
-
 	const bool rst = isInsidZone(OwnerComp);
 	OwnerComp.GetBlackboardComponent()->SetValueAsBool(m_flagZoneToStop.SelectedKeyName, rst);
 	FinishLatentTask(OwnerComp, rst ? EBTNodeResult::Succeeded : EBTNodeResult::InProgress);

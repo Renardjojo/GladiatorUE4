@@ -8,6 +8,7 @@
 #include "GameFramework/Pawn.h" //APawn
 #include "GameFramework/Controller.h" //AController
 #include "AIController.h" //AAIController
+#include "GladiatorUE4/GladiatorUE4Character.h"
 
 /*Debug*/
 #include "Engine/GameEngine.h" //AddOnScreenDebugMessage
@@ -72,6 +73,8 @@ void UMyBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	{
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green,TEXT("Attack"));
+
+		Cast<AGladiatorUE4Character>(pEnnemyActor)->TakeDammage(1);
 
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}
