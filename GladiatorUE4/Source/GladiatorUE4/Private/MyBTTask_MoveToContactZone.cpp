@@ -7,6 +7,7 @@
 #include "GameFramework/Pawn.h" //APawn
 #include "GameFramework/Controller.h" //AController
 #include "AIController.h" //AAIController
+#include "Kismet/KismetMathLibrary.h" //FindLookAtRotation
 
 EBTNodeResult::Type UMyBTTask_MoveToContactZone::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -31,14 +32,17 @@ EBTNodeResult::Type UMyBTTask_MoveToContactZone::ExecuteTask(UBehaviorTreeCompon
 	{
 	case EZonePlayerState::TooClose:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", false);
+		pSelfPawn->bUseControllerRotationYaw = false;
 		return runAway(OwnerComp, pSelfPawn, pEnnemyActor, acceptableRadius) ? EBTNodeResult::Failed : EBTNodeResult::Aborted;
 
 	case EZonePlayerState::Inside:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", true);
+		pSelfPawn->bUseControllerRotationYaw = false;
 		return EBTNodeResult::Succeeded;
 
 	case EZonePlayerState::Outside:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", false);
+		pSelfPawn->bUseControllerRotationYaw = false;
 		return moveToContactZone(OwnerComp, pSelfPawn, pEnnemyActor, acceptableRadius) ? EBTNodeResult::Failed : EBTNodeResult::Aborted;
 
 	default:
@@ -57,6 +61,7 @@ bool UMyBTTask_MoveToContactZone::moveToContactZone(UBehaviorTreeComponent& Owne
 	}
 
 	pAIController->MoveToActor(pEnnemyActor, acceptableRadius - zoneSize, m_stopOnOverlap, m_usePathfinding, m_canStrafe);
+	rotateToLookPlayer(OwnerComp, pSelfPawn, pEnnemyActor);
 
 	return true;
 }
@@ -64,6 +69,7 @@ bool UMyBTTask_MoveToContactZone::moveToContactZone(UBehaviorTreeComponent& Owne
 bool UMyBTTask_MoveToContactZone::runAway(UBehaviorTreeComponent& OwnerComp, APawn* pSelfPawn, AActor* pEnnemyActor, const float acceptableRadius)
 {
 	AAIController* pAIController = Cast<AAIController>(pSelfPawn->GetController());
+	const float zoneSize = OwnerComp.GetBlackboardComponent()->GetValueAsFloat("ZoneSize");
 
 	if (!pAIController)
 	{
@@ -73,7 +79,9 @@ bool UMyBTTask_MoveToContactZone::runAway(UBehaviorTreeComponent& OwnerComp, APa
 	FVector direction = pSelfPawn->GetActorLocation() - pEnnemyActor->GetActorLocation();
 	direction.Normalize();
 
-	pAIController->MoveToLocation((direction * acceptableRadius) + pSelfPawn->GetActorLocation());
+	pAIController->MoveToLocation((direction * (acceptableRadius - zoneSize)) + pSelfPawn->GetActorLocation());
+
+	rotateToLookPlayer(OwnerComp, pSelfPawn, pEnnemyActor);
 
 	return true;
 }
@@ -95,4 +103,12 @@ EZonePlayerState UMyBTTask_MoveToContactZone::checkWhereIsPlayerFromContactZone(
 	{
 		return EZonePlayerState::Inside;
 	}
+}
+
+void UMyBTTask_MoveToContactZone::rotateToLookPlayer(UBehaviorTreeComponent& OwnerComp, APawn* pSelfPawn, AActor* pEnnemyActor)
+{
+	//Alway face to the player
+	FRotator rotation = UKismetMathLibrary::FindLookAtRotation(pSelfPawn->GetActorLocation(), pEnnemyActor->GetActorLocation());
+	rotation = FRotator::MakeFromEuler(rotation.Euler() * FVector::UpVector);
+	pSelfPawn->SetActorRotation(rotation);
 }

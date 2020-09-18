@@ -9,7 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "TimerManager.h" // FTimerManager::SetTimer
-#include "GameFramework/CharacterMovementComponent.h" //UCharacterMovementComponent::SetMovementMode
+#include "GenericPlatform/GenericPlatformMisc.h" //TFunction
 
 //////////////////////////////////////////////////////////////////////////
 // AGladiatorUE4Character
@@ -123,7 +123,6 @@ void AGladiatorUE4Character::MoveForward(float Value)
 void AGladiatorUE4Character::StopAttack() noexcept
 {
 	IsAttack = false;
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 }
 
 void AGladiatorUE4Character::Attack() noexcept
@@ -135,9 +134,8 @@ void AGladiatorUE4Character::Attack() noexcept
 
 	TimerDel.BindUFunction(this, FName("StopAttack"));
 
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 
-	GetWorldTimerManager().SetTimer(TimerHandle, TimerDel, 0.8f, false);
+	GetWorldTimerManager().SetTimer(TimerHandle, TimerDel, 0.5f, false);
 }
 
 void AGladiatorUE4Character::MoveRight(float Value)

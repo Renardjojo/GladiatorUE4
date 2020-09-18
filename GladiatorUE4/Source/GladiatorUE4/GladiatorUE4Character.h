@@ -36,8 +36,9 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
-
-
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
+	bool IsAttack;
 
 protected:
 
@@ -73,11 +74,17 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
+	UFUNCTION(Category = "Attack")
+	void StopAttack() noexcept;
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	UFUNCTION(BlueprintCallable, Category = "Attack")
+	void Attack() noexcept;
 
 	/**
 	 * @brief Function to inflict dammage to player

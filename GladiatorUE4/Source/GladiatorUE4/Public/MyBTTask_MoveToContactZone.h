@@ -30,6 +30,7 @@ class GLADIATORUE4_API UMyBTTask_MoveToContactZone : public UBTTask_BlackboardBa
 	*/
 	bool moveToContactZone(UBehaviorTreeComponent& OwnerComp, APawn* pSelfPawn, AActor* pEnnemyActor, const float acceptableRadius);
 	bool runAway(UBehaviorTreeComponent& OwnerComp, APawn* pSelfPawn, AActor* pEnnemyActor, const float acceptableRadius);
+	void rotateToLookPlayer(UBehaviorTreeComponent& OwnerComp, APawn* pSelfPawn, AActor* pEnnemyActor);
 
 	EZonePlayerState checkWhereIsPlayerFromContactZone(UBehaviorTreeComponent& OwnerComp, APawn* pSelfPawn, AActor* pEnnemyActor, const float acceptableRadius);
 
