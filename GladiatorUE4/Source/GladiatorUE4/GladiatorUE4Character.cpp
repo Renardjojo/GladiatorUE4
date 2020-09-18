@@ -74,14 +74,9 @@ void AGladiatorUE4Character::SetupPlayerInputComponent(class UInputComponent* Pl
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AGladiatorUE4Character::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &AGladiatorUE4Character::TouchStopped);
 
-	// VR headset functionality
-	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AGladiatorUE4Character::OnResetVR);
-}
-
-
-void AGladiatorUE4Character::OnResetVR()
-{
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &AGladiatorUE4Character::Attack);
+	PlayerInputComponent->BindAction("Block", IE_Pressed, this, &AGladiatorUE4Character::Block);
+	PlayerInputComponent->BindAction("Block", IE_Released, this, &AGladiatorUE4Character::StopDefense);
 }
 
 void AGladiatorUE4Character::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
@@ -123,21 +118,25 @@ void AGladiatorUE4Character::MoveForward(float Value)
 void AGladiatorUE4Character::StopAttack() noexcept
 {
 	IsAttack = false;
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	Controller->SetIgnoreMoveInput(false);
+}
+
+void AGladiatorUE4Character::StopDefense() noexcept
+{
+	IsBlock = false;
+	Controller->SetIgnoreMoveInput(false);
 }
 
 void AGladiatorUE4Character::Attack() noexcept
 {
 	IsAttack = true;
+	Controller->SetIgnoreMoveInput(true);
+}
 
-	FTimerHandle TimerHandle;
-	FTimerDelegate TimerDel;
-
-	TimerDel.BindUFunction(this, FName("StopAttack"));
-
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
-
-	GetWorldTimerManager().SetTimer(TimerHandle, TimerDel, 0.8f, false);
+void AGladiatorUE4Character::Block() noexcept
+{
+	IsBlock = true;
+	Controller->SetIgnoreMoveInput(true);
 }
 
 void AGladiatorUE4Character::MoveRight(float Value)

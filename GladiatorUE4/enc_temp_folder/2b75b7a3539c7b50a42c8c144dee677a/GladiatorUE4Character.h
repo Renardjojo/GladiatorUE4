@@ -40,10 +40,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
 	bool IsAttack;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
-	bool IsBlock;
-
 protected:
+
+	/** Resets HMD orientation in VR. */
+	void OnResetVR();
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
@@ -74,11 +74,8 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
-	UFUNCTION(BlueprintCallable, Category = "Attack")
+	UFUNCTION(Category = "Attack")
 	void StopAttack() noexcept;
-
-	UFUNCTION(BlueprintCallable, Category = "Defense")
-	void StopDefense() noexcept;
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -88,10 +85,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Attack")
 	void Attack() noexcept;
-	
-	UFUNCTION(BlueprintCallable, Category = "Defense")
-	void Block() noexcept;
-
 
 	/**
 	 * @brief Function to inflict dammage to player
