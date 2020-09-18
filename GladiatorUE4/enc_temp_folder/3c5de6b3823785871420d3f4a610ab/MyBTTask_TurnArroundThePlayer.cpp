@@ -30,7 +30,7 @@ EBTNodeResult::Type UMyBTTask_TurnArroundThePlayer::ExecuteTask(UBehaviorTreeCom
 		return EBTNodeResult::Failed;
 	}
 
-	pAIController->MoveToLocation((pSelfPawn->GetActorLocation() - pEnnemyActor->GetActorLocation()).RotateAngleAxis(30, FVector::UpVector) + pEnnemyActor->GetActorLocation());
+	pAIController->MoveToLocation((pSelfPawn->GetActorLocation() - pEnnemyActor->GetActorLocation()).RotateAngleAxis(75, FVector::UpVector) + pEnnemyActor->GetActorLocation());
 
 	bNotifyTick = true;
 

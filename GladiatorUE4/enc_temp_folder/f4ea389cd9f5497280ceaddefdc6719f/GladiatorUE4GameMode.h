@@ -15,7 +15,7 @@ class AGladiatorUE4GameMode : public AGameModeBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	uint8 m_numberOfEnnemyAtWolrdInit = 7;
+	uint8 m_numberOfEnnemyAtWolrdInit = 5;
 
 	AActor* EnnemyManager;
 
