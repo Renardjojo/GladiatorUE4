@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "GladiatorUE4Character.generated.h"
 
+class UPrimitiveComponent;
+struct FHitResult;
+
 UCLASS(config=Game)
 class AGladiatorUE4Character : public ACharacter
 {
@@ -19,6 +22,18 @@ class AGladiatorUE4Character : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
+	class UMaterialInstanceDynamic* DynMaterial;
+
+protected:
+
+	/** The shield mesh associated with this Character*/
+	UPROPERTY(Category = Tools, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* MeshShield;
+
+	/** The shield mesh associated with this Character*/
+	UPROPERTY(Category = Tools, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class USkeletalMeshComponent* MeshTool;
+
 	/*life*/
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	uint8 m_life;
@@ -26,8 +41,12 @@ class AGladiatorUE4Character : public ACharacter
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	uint8 m_maxLife;
 
+
+
 public:
 	AGladiatorUE4Character();
+
+	void BeginPlay() final;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -37,10 +56,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = StateMachine)
 	bool IsAttack;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = StateMachine)
 	bool IsBlock;
 
 protected:
@@ -68,6 +87,24 @@ protected:
 
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+
+	UFUNCTION(BlueprintCallable)
+	void StopNotifieDamage();
+
+	UFUNCTION(BlueprintCallable)
+	void NotifieDamage();
+
+	/**
+	 * @brief CallBack OnComponent overlap of weapon
+	 * @param OnComponentBeginOverlap 
+	 * @param OverlappedComponent 
+	 * @param OtherActor 
+	 * @param OtherComp 
+	 * @param OtherBodyIndex 
+	 * @param SweepResult 
+	*/
+	UFUNCTION(BlueprintCallable)
+	void TryToInflictDammageToEnnemyCallBack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	// APawn interface

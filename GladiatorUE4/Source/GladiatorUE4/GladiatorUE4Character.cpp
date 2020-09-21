@@ -10,6 +10,14 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "TimerManager.h" // FTimerManager::SetTimer
 #include "GameFramework/CharacterMovementComponent.h" //UCharacterMovementComponent::SetMovementMode
+#include "Components/SkeletalMeshComponent.h" //USkeletalMeshComponent
+#include "Components/PrimitiveComponent.h" //OnComponentOverlap
+#include "Engine/EngineTypes.h" //FHitResult
+#include "Ennemy.h" //AEnnemy
+
+/*Debug*/
+#include "Engine/GameEngine.h" //AddOnScreenDebugMessage
+#include "Containers/UnrealString.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AGladiatorUE4Character
@@ -45,8 +53,29 @@ AGladiatorUE4Character::AGladiatorUE4Character()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	//create shield
+	MeshShield = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshShield"));
+	MeshShield->SetupAttachment(GetMesh());
+
+	// Create Weapon
+	MeshTool = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshTool"));
+	MeshTool->SetupAttachment(GetMesh());
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+}
+
+void AGladiatorUE4Character::BeginPlay()
+{
+	Super::BeginPlay();
+
+	FScriptDelegate CollisionBeginOverlap;
+	CollisionBeginOverlap.BindUFunction(this, TEXT("TryToInflictDammageToEnnemyCallBack"));
+	MeshTool->OnComponentBeginOverlap.Add(CollisionBeginOverlap);
+
+	auto Material = GetMesh()->GetMaterial(0);
+	DynMaterial = UMaterialInstanceDynamic::Create(Material, this);
+	GetMesh()->SetMaterial(0, DynMaterial);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,6 +144,21 @@ void AGladiatorUE4Character::MoveForward(float Value)
 	}
 }
 
+void AGladiatorUE4Character::TryToInflictDammageToEnnemyCallBack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AGladiatorUE4Character* pEnnemyActor = Cast<AGladiatorUE4Character>(OtherActor);
+
+	if (!pEnnemyActor)
+	{
+		return;
+	}
+
+	if (IsAttack)
+	{
+		pEnnemyActor->TakeDammage(1);
+	}
+}
+
 void AGladiatorUE4Character::StopAttack() noexcept
 {
 	IsAttack = false;
@@ -154,6 +198,9 @@ void AGladiatorUE4Character::MoveRight(float Value)
 	}
 }
 
+#include "Materials/Material.h"
+#include "Materials/MaterialInstanceDynamic.h"
+
 void AGladiatorUE4Character::TakeDammage(uint8 dammage) noexcept
 {
 	if ((int8)m_life - dammage < 0)
@@ -164,6 +211,30 @@ void AGladiatorUE4Character::TakeDammage(uint8 dammage) noexcept
 	{
 		m_life -= dammage;
 	}
+
+
+	FColor qColor;
+	qColor.A = 0.0;
+	qColor.R = 120.0;
+	qColor.G = 200.0;
+	qColor.B = 36.0;
+	FLinearColor fColor(100.0, 23.0, 233.0);
+	FVector vColor(100.0, 23.0, 233.0);
+
+
+	FTimerHandle DefaultHandle;
+	NotifieDamage();
+	GetWorldTimerManager().SetTimer(DefaultHandle, this, &AGladiatorUE4Character::StopNotifieDamage, 0.5);
+}
+
+void AGladiatorUE4Character::StopNotifieDamage()
+{
+	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Black);
+}
+
+void AGladiatorUE4Character::NotifieDamage()
+{
+	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Red);
 }
 
 void AGladiatorUE4Character::TakeLife(uint8 additionnalLife) noexcept

@@ -10,7 +10,7 @@ Projet UE4 GP2
 ### Player :
 - [x] le joueur peut déplacer son personnage dans l'environnement en utilisant Z, S,Q, D (qui déplace le personnage du joueur en avant, à gauche, en arrière, à droite dans la référence de la caméra)
 - [x] Le personnage du joueur doit toujours s’orienter dans la direction dans laquelle il se déplace, il ne doit jamais strafe, ni reculer.
-- [ ] Le joueur commence avec 5 points de la vie (cette valeur devrait être facilement ajustable dans l'éditeur)
+- [x] Le joueur commence avec 5 points de la vie (cette valeur devrait être facilement ajustable dans l'éditeur)
 
 ### Player attaque :
 - [ ] Lorsque le joueur appuie sur le bouton gauche de la souris, son personnage attaque et l'animation d'attaque est jouée
@@ -24,12 +24,12 @@ Projet UE4 GP2
 - [ ] En défense le personnage bloque toutes attaques frontal mais ne peut plus bouger, ni s'orienter
 
 ### Ennemis :
-- [ ] Quand le jeu commence, il y a 5 ennemis dans l'arène
-- [ ] Ils ont tous 3 points de vie
+- [x] Quand le jeu commence, il y a 5 ennemis dans l'arène
+- [x] Ils ont tous 3 points de vie
 
 ### IA - Position des ennemis :
-- [ ] En tant que groupe, ils ne restent pas trop loin du joueur, mais pas trop près pour des raisons évidentes de sécurité (pour éviter d'être  acilement attaqué par le joueur)
-- [ ] Chaque ennemi doit avoir une vue non obstruée du joueur, c'est-à-dire que pour chaque ennemi, la ligne de mire entre cet ennemi et le joueur ne doit pas se croiser avec d'autres ennemis
+- [x] En tant que groupe, ils ne restent pas trop loin du joueur, mais pas trop près pour des raisons évidentes de sécurité (pour éviter d'être  acilement attaqué par le joueur)
+- [x] Chaque ennemi doit avoir une vue non obstruée du joueur, c'est-à-dire que pour chaque ennemi, la ligne de mire entre cet ennemi et le joueur ne doit pas se croiser avec d'autres ennemis
 - [ ] Sauf pendant l'attaque, l'ennemi doit toujours faire face au joueur, à tout moment. Par conséquent, les ennemis sont autorisés à se dégager et à reculer
 
 ### IA - Ennemis attaque :
