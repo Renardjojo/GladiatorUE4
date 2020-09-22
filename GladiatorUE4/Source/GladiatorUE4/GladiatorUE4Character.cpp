@@ -187,6 +187,27 @@ void AGladiatorUE4Character::Block() noexcept
 	Controller->SetIgnoreMoveInput(true);
 }
 
+void AGladiatorUE4Character::StartInflictDamage() noexcept
+{
+	MeshTool->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+void AGladiatorUE4Character::StopInflictDamage() noexcept
+{
+	MeshTool->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AGladiatorUE4Character::StopNotifieDamage()
+{
+	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Black);
+}
+
+void AGladiatorUE4Character::NotifieDamage()
+{
+	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Red);
+}
+
+
 void AGladiatorUE4Character::MoveRight(float Value)
 {
 	if ( (Controller != NULL) && (Value != 0.0f) )
@@ -223,16 +244,6 @@ void AGladiatorUE4Character::TakeDammage(uint8 dammage) noexcept
 	FTimerHandle DefaultHandle;
 	NotifieDamage();
 	GetWorldTimerManager().SetTimer(DefaultHandle, this, &AGladiatorUE4Character::StopNotifieDamage, 1.5f);
-}
-
-void AGladiatorUE4Character::StopNotifieDamage()
-{
-	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Black);
-}
-
-void AGladiatorUE4Character::NotifieDamage()
-{
-	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Red);
 }
 
 void AGladiatorUE4Character::Kill() noexcept

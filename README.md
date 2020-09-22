@@ -13,14 +13,14 @@ Projet UE4 GP2
 - [x] Le joueur commence avec 5 points de la vie (cette valeur devrait être facilement ajustable dans l'éditeur)
 
 ### Player attaque :
-- [ ] Lorsque le joueur appuie sur le bouton gauche de la souris, son personnage attaque et l'animation d'attaque est jouée
-- [ ] Pendant l’attaque, le joueur ne peut pas se déplacer
-- [ ] L'attaque doit vérifier s'il y a collision pour voir si un ennemi est touché (ce test doit être effectué au bon moment de l'animation de l'attaque pour que le joueur se sente bien dans le jeu)
-- [ ] Si l'ennemi est touché, un effet visuel doit apparaître pour indiquer clairement au joueur que son attaque a bien touchée. (Cela peut être une particule ou une couleur de matériau temporaire qui vire au rouge, cela n’a aucune importance tant que le retour est évident pour le joueur)
-- [ ] Dans ce cas, l’ennemie touché perd un point de vie
+- [x] Lorsque le joueur appuie sur le bouton gauche de la souris, son personnage attaque et l'animation d'attaque est jouée
+- [x] Pendant l’attaque, le joueur ne peut pas se déplacer
+- [+/-] L'attaque doit vérifier s'il y a collision pour voir si un ennemi est touché (ce test doit être effectué au bon moment de l'animation de l'attaque pour que le joueur se sente bien dans le jeu)
+- [x] Si l'ennemi est touché, un effet visuel doit apparaître pour indiquer clairement au joueur que son attaque a bien touchée. (Cela peut être une particule ou une couleur de matériau temporaire qui vire au rouge, cela n’a aucune importance tant que le retour est évident pour le joueur)
+- [x] Dans ce cas, l’ennemie touché perd un point de vie
 
 ### Player defense : 
-- [ ] Lorsque le joueur appuis sur le bouton droit de la souris, son personnage défend et lève le bouclier tant que le bouton n’est pas relâcher
+- [x] Lorsque le joueur appuis sur le bouton droit de la souris, son personnage défend et lève le bouclier tant que le bouton n’est pas relâcher
 - [ ] En défense le personnage bloque toutes attaques frontal mais ne peut plus bouger, ni s'orienter
 
 ### Ennemis :
@@ -30,7 +30,7 @@ Projet UE4 GP2
 ### IA - Position des ennemis :
 - [x] En tant que groupe, ils ne restent pas trop loin du joueur, mais pas trop près pour des raisons évidentes de sécurité (pour éviter d'être  acilement attaqué par le joueur)
 - [x] Chaque ennemi doit avoir une vue non obstruée du joueur, c'est-à-dire que pour chaque ennemi, la ligne de mire entre cet ennemi et le joueur ne doit pas se croiser avec d'autres ennemis
-- [ ] Sauf pendant l'attaque, l'ennemi doit toujours faire face au joueur, à tout moment. Par conséquent, les ennemis sont autorisés à se dégager et à reculer
+- [+/-] Sauf pendant l'attaque, l'ennemi doit toujours faire face au joueur, à tout moment. Par conséquent, les ennemis sont autorisés à se dégager et à reculer
 
 ### IA - Ennemis attaque :
 - [ ] Toutes les secondes (cette période devrait être une valeur ajustable dans l'éditeur), un ennemi est choisi pour attaquer le joueur
@@ -41,8 +41,8 @@ Projet UE4 GP2
 - [ ] Une fois l'attaque terminée, l'ennemi doit revenir à sa position par défaut (pas trop près / pas trop loin du joueur)
 
 ### Mort :
-- [ ] Si un personnage (joueur ou ennemi) perd toute sa vie, l'animation de mort est jouée.
-- [ ] Une fois l'animation terminée, le personnage reste sur la dernière image (couché au sol), les collisions et la logique sont désactivés (le personnage devient simplement un élément graphique d'arrière-plan)
+- [x] Si un personnage (joueur ou ennemi) perd toute sa vie, l'animation de mort est jouée.
+- [x] Une fois l'animation terminée, le personnage reste sur la dernière image (couché au sol), les collisions et la logique sont désactivés (le personnage devient simplement un élément graphique d'arrière-plan)
 
 ### Game state :
 - [ ] Lorsque tous les ennemis sont vaincus et que le joueur est toujours en vie, le jeu doit informer le joueur qu'il a gagné (affiche un texte «You Win», par exemple), et le jeu devrait être réinitialisé (joueur et ennemis respawn)

@@ -89,12 +89,6 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
-	UFUNCTION(BlueprintCallable)
-	void StopNotifieDamage();
-
-	UFUNCTION(BlueprintCallable)
-	void NotifieDamage();
-
 	/**
 	 * @brief CallBack OnComponent overlap of weapon
 	 * @param OnComponentBeginOverlap 
@@ -126,6 +120,18 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "State")
 	void StopImunity() noexcept;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void NotifieDamage();
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void StopNotifieDamage();
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void StartInflictDamage() noexcept;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void StopInflictDamage() noexcept;
 
 public:
 	/** Returns CameraBoom subobject **/
