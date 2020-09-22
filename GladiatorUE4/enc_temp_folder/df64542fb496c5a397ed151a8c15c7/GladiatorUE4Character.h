@@ -41,8 +41,7 @@ protected:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	uint8 m_maxLife;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	bool m_isImunised = false;
+
 
 public:
 	AGladiatorUE4Character();
@@ -117,15 +116,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Defense")
 	void StopDefense() noexcept;
-
-	UFUNCTION(BlueprintCallable, Category = "State")
-	void Kill() noexcept;
-
-	UFUNCTION(BlueprintCallable, Category = "State")
-	void ImmuniseForDammage() noexcept;
-
-	UFUNCTION(BlueprintCallable, Category = "State")
-	void StopImunity() noexcept;
 
 public:
 	/** Returns CameraBoom subobject **/

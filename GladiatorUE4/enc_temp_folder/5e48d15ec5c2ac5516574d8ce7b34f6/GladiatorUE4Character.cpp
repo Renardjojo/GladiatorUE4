@@ -14,10 +14,6 @@
 #include "Components/PrimitiveComponent.h" //OnComponentOverlap
 #include "Engine/EngineTypes.h" //FHitResult
 #include "Ennemy.h" //AEnnemy
-#include "AIController.h" //AAIController
-#include "BrainComponent.h" //BrainComponent
-#include "Materials/Material.h"//SetMaterial, GetMaterial
-#include "Materials/MaterialInstanceDynamic.h" //SetVectorParameterValue, UMaterialInstanceDynamic
 
 /*Debug*/
 #include "Engine/GameEngine.h" //AddOnScreenDebugMessage
@@ -202,27 +198,23 @@ void AGladiatorUE4Character::MoveRight(float Value)
 	}
 }
 
-void AGladiatorUE4Character::TakeDammage(uint8 dammage) noexcept
-{	
-	if (m_isImunised)
-	{
-		return;
-	}
+#include "Materials/Material.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
-	if ((int8)m_life - dammage <= 0)
+void AGladiatorUE4Character::TakeDammage(uint8 dammage) noexcept
+{
+	if ((int8)m_life - dammage < 0)
 	{
-		/*Kill*/
-		Kill();
+		m_life = 0;
 	}
 	else
 	{
-		ImmuniseForDammage();
 		m_life -= dammage;
 	}
 
 	FTimerHandle DefaultHandle;
 	NotifieDamage();
-	GetWorldTimerManager().SetTimer(DefaultHandle, this, &AGladiatorUE4Character::StopNotifieDamage, 1.5f);
+	GetWorldTimerManager().SetTimer(DefaultHandle, this, &AGladiatorUE4Character::StopNotifieDamage, 0.5);
 }
 
 void AGladiatorUE4Character::StopNotifieDamage()
@@ -233,27 +225,6 @@ void AGladiatorUE4Character::StopNotifieDamage()
 void AGladiatorUE4Character::NotifieDamage()
 {
 	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Red);
-}
-
-void AGladiatorUE4Character::Kill() noexcept
-{
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("NoCollision"));
-	Cast<AAIController>(GetController())->BrainComponent->StopLogic("Death");
-	m_life = 0;
-}
-
-void AGladiatorUE4Character::ImmuniseForDammage() noexcept
-{
-	m_isImunised = true; /*TODO: Can be optimize if disable collision*/
-
-	FTimerHandle DefaultHandle;
-	NotifieDamage();
-	GetWorldTimerManager().SetTimer(DefaultHandle, this, &AGladiatorUE4Character::StopImunity, 1.5f);
-}
-
-void AGladiatorUE4Character::StopImunity() noexcept
-{
-	m_isImunised = false; /*TODO: Can be optimize if disable collision*/
 }
 
 void AGladiatorUE4Character::TakeLife(uint8 additionnalLife) noexcept
