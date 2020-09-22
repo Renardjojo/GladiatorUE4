@@ -105,15 +105,8 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
-
-	UFUNCTION(BlueprintCallable, Category = "Attack")
-	void StopAttack() noexcept;
-
-	UFUNCTION(BlueprintCallable, Category = "Defense")
-	void StopDefense() noexcept;
-
-	UFUNCTION(BlueprintCallable, Category = "State")
-	void Kill() noexcept;
+	
+	virtual void Kill() noexcept;
 
 	UFUNCTION(BlueprintCallable, Category = "State")
 	void ImmuniseForDammage() noexcept;
@@ -139,12 +132,21 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-	UFUNCTION(BlueprintCallable, Category = "Attack")
-	void Attack() noexcept;
-	
-	UFUNCTION(BlueprintCallable, Category = "Defense")
-	void Block() noexcept;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void StopAttack();
+	virtual void StopAttack_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void StopDefense();
+	virtual void StopDefense_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Attack();
+	virtual void Attack_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Block();
+	virtual void Block_Implementation();
 
 	/**
 	 * @brief Function to inflict dammage to player

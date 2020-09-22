@@ -15,7 +15,7 @@ Projet UE4 GP2
 ### Player attaque :
 - [x] Lorsque le joueur appuie sur le bouton gauche de la souris, son personnage attaque et l'animation d'attaque est jouée
 - [x] Pendant l’attaque, le joueur ne peut pas se déplacer
-- [+/-] L'attaque doit vérifier s'il y a collision pour voir si un ennemi est touché (ce test doit être effectué au bon moment de l'animation de l'attaque pour que le joueur se sente bien dans le jeu)
+- [x] L'attaque doit vérifier s'il y a collision pour voir si un ennemi est touché (ce test doit être effectué au bon moment de l'animation de l'attaque pour que le joueur se sente bien dans le jeu)
 - [x] Si l'ennemi est touché, un effet visuel doit apparaître pour indiquer clairement au joueur que son attaque a bien touchée. (Cela peut être une particule ou une couleur de matériau temporaire qui vire au rouge, cela n’a aucune importance tant que le retour est évident pour le joueur)
 - [x] Dans ce cas, l’ennemie touché perd un point de vie
 

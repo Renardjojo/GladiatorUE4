@@ -71,10 +71,7 @@ void UMyBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 	if (pAIController->GetMoveStatus() == EPathFollowingStatus::Idle)
 	{
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green,TEXT("Attack"));
-
-		Cast<AGladiatorUE4Character>(pEnnemyActor)->TakeDammage(1);
+		Cast<AGladiatorUE4Character>(pSelfPawn)->Attack();
 
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}

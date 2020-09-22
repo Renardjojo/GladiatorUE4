@@ -17,12 +17,21 @@ class AGladiatorUE4GameMode : public AGameModeBase
 	UPROPERTY(EditAnywhere)
 	uint8 m_numberOfEnnemyAtWolrdInit = 7;
 
-	AActor* EnnemyManager;
+	TArray<AEnnemy*> EnnemyManager;
+	AEnnemy* CurrentAttackingEnnemy = nullptr;
+
+	float delayBeforNextAttackCount = 0.f;
+	bool waitingForNextAttack = true;
+
+	UPROPERTY(EditAnywhere)
+	float delayBeforNextAttack = 3.f;
 
 public:
 	AGladiatorUE4GameMode();
 
 	void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) final;
+
+	void Tick(float DeltaSeconds) final;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Classes)
 	TSubclassOf<AEnnemy> DefaultEnnemyClass;

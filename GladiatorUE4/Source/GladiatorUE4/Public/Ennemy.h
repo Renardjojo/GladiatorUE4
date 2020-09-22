@@ -19,7 +19,20 @@ public:
 	// Sets default values for this character's properties
 	AEnnemy();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = StateMachine)
+	bool CanAttack = false;
+
 protected:
+
+	virtual void Kill() noexcept override;
+
+	virtual void StopAttack_Implementation()  override;
+
+	virtual void StopDefense_Implementation()  override;
+
+	virtual void Attack_Implementation() override;
+
+	virtual void Block_Implementation()  override;
 
 public:	
 	// Called every frame

@@ -14,8 +14,6 @@
 #include "Components/PrimitiveComponent.h" //OnComponentOverlap
 #include "Engine/EngineTypes.h" //FHitResult
 #include "Ennemy.h" //AEnnemy
-#include "AIController.h" //AAIController
-#include "BrainComponent.h" //BrainComponent
 #include "Materials/Material.h"//SetMaterial, GetMaterial
 #include "Materials/MaterialInstanceDynamic.h" //SetVectorParameterValue, UMaterialInstanceDynamic
 
@@ -152,36 +150,31 @@ void AGladiatorUE4Character::TryToInflictDammageToEnnemyCallBack(UPrimitiveCompo
 {
 	AGladiatorUE4Character* pEnnemyActor = Cast<AGladiatorUE4Character>(OtherActor);
 
-	if (!pEnnemyActor)
-	{
-		return;
-	}
-
-	if (IsAttack)
+	if (pEnnemyActor)
 	{
 		pEnnemyActor->TakeDammage(1);
 	}
 }
 
-void AGladiatorUE4Character::StopAttack() noexcept
+void AGladiatorUE4Character::StopAttack_Implementation()
 {
 	IsAttack = false;
 	Controller->SetIgnoreMoveInput(false);
 }
 
-void AGladiatorUE4Character::StopDefense() noexcept
+void AGladiatorUE4Character::StopDefense_Implementation()
 {
 	IsBlock = false;
 	Controller->SetIgnoreMoveInput(false);
 }
 
-void AGladiatorUE4Character::Attack() noexcept
+void AGladiatorUE4Character::Attack_Implementation()
 {
 	IsAttack = true;
 	Controller->SetIgnoreMoveInput(true);
 }
 
-void AGladiatorUE4Character::Block() noexcept
+void AGladiatorUE4Character::Block_Implementation()
 {
 	IsBlock = true;
 	Controller->SetIgnoreMoveInput(true);
@@ -249,7 +242,6 @@ void AGladiatorUE4Character::TakeDammage(uint8 dammage) noexcept
 void AGladiatorUE4Character::Kill() noexcept
 {
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("NoCollision"));
-	Cast<AAIController>(GetController())->BrainComponent->StopLogic("Death");
 	m_life = 0;
 }
 

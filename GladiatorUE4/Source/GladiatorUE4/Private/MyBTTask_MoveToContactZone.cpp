@@ -8,6 +8,7 @@
 #include "GameFramework/Controller.h" //AController
 #include "AIController.h" //AAIController
 #include "Kismet/KismetMathLibrary.h" //FindLookAtRotation
+#include "Ennemy.h" //AEnnemy
 
 EBTNodeResult::Type UMyBTTask_MoveToContactZone::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -32,16 +33,19 @@ EBTNodeResult::Type UMyBTTask_MoveToContactZone::ExecuteTask(UBehaviorTreeCompon
 	{
 	case EZonePlayerState::TooClose:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", false);
+		Cast<AEnnemy>(pSelfPawn)->CanAttack = true;
 		pSelfPawn->bUseControllerRotationYaw = false;
 		return runAway(OwnerComp, pSelfPawn, pEnnemyActor, acceptableRadius) ? EBTNodeResult::Failed : EBTNodeResult::Aborted;
 
 	case EZonePlayerState::Inside:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", true);
+		Cast<AEnnemy>(pSelfPawn)->CanAttack = true;
 		pSelfPawn->bUseControllerRotationYaw = false;
 		return EBTNodeResult::Succeeded;
 
 	case EZonePlayerState::Outside:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", false);
+		Cast<AEnnemy>(pSelfPawn)->CanAttack = false;
 		pSelfPawn->bUseControllerRotationYaw = false;
 		return moveToContactZone(OwnerComp, pSelfPawn, pEnnemyActor, acceptableRadius) ? EBTNodeResult::Failed : EBTNodeResult::Aborted;
 
