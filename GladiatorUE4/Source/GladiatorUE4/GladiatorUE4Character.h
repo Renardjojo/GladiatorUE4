@@ -101,6 +101,10 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void TryToInflictDammageToEnnemyCallBack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION(BlueprintCallable)
+	void BlockAttackCallBack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -125,6 +129,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "State")
 	void StopInflictDamage() noexcept;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	bool CanBlockAttack() noexcept;
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -170,6 +177,9 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	FORCEINLINE uint8 GetLife() const noexcept { return m_life; }
+
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	FORCEINLINE float GetLifeRatio() const noexcept { return m_life / (float)m_maxLife; }
 
 };
 

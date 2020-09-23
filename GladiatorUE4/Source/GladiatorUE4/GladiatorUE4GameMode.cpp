@@ -4,8 +4,7 @@
 #include "GladiatorUE4Character.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Ennemy.h"
-#include "GameFramework\Character.h"
-#include "UObject/UObjectGlobals.h" //NewObject
+#include "GameFramework/Character.h"
 
 /*Debug*/
 #include "Engine/GameEngine.h" //AddOnScreenDebugMessage
@@ -13,11 +12,11 @@
 AGladiatorUE4GameMode::AGladiatorUE4GameMode()
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
+	/*static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
-	}
+	}*/
 
 	static ConstructorHelpers::FClassFinder<AEnnemy> EnnemyBPClass(TEXT("/Game/Ennemy/Ennemy"));
 	if (EnnemyBPClass.Class != NULL)

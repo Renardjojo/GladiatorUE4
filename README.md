@@ -21,7 +21,7 @@ Projet UE4 GP2
 
 ### Player defense : 
 - [x] Lorsque le joueur appuis sur le bouton droit de la souris, son personnage défend et lève le bouclier tant que le bouton n’est pas relâcher
-- [ ] En défense le personnage bloque toutes attaques frontal mais ne peut plus bouger, ni s'orienter
+- [x] En défense le personnage bloque toutes attaques frontal mais ne peut plus bouger, ni s'orienter
 
 ### Ennemis :
 - [x] Quand le jeu commence, il y a 5 ennemis dans l'arène
@@ -33,12 +33,12 @@ Projet UE4 GP2
 - [+/-] Sauf pendant l'attaque, l'ennemi doit toujours faire face au joueur, à tout moment. Par conséquent, les ennemis sont autorisés à se dégager et à reculer
 
 ### IA - Ennemis attaque :
-- [ ] Toutes les secondes (cette période devrait être une valeur ajustable dans l'éditeur), un ennemi est choisi pour attaquer le joueur
-- [ ] L’algorithme qui choisit l’ennemi pour attaquer appartient aux développeurs, dans la mesure où il rend le jeu aussi amusant que possible (choisissez un ennemi aléatoire, choisissez l’ennemi le plus proche, celui situé à l’arrière du joueur, le dernier attaquant récent, une combinaison des règles précédentes…)
-- [ ] L'attaquant choisi doit se déplacer vers le joueur, suffisamment près pour que l'attaque puisse l'atteindre. Il devrait alors déclencher l'attaque
-- [ ] Comme le joueur, l'ennemi ne peut pas se déplacer lorsqu'il attaque et une vérification de la collision doit être effectuée au bon moment pour détecter si le joueur est touché
-- [ ] Si le joueur est touché, il devra perdre un point de vie et un FX devra être joué afin de lui donner un retour évident qu'il a été attaqué
-- [ ] Une fois l'attaque terminée, l'ennemi doit revenir à sa position par défaut (pas trop près / pas trop loin du joueur)
+- [x] Toutes les secondes (cette période devrait être une valeur ajustable dans l'éditeur), un ennemi est choisi pour attaquer le joueur
+- [+/-] L’algorithme qui choisit l’ennemi pour attaquer appartient aux développeurs, dans la mesure où il rend le jeu aussi amusant que possible (choisissez un ennemi aléatoire, choisissez l’ennemi le plus proche, celui situé à l’arrière du joueur, le dernier attaquant récent, une combinaison des règles précédentes…)
+- [x] L'attaquant choisi doit se déplacer vers le joueur, suffisamment près pour que l'attaque puisse l'atteindre. Il devrait alors déclencher l'attaque
+- [+/-] Comme le joueur, l'ennemi ne peut pas se déplacer lorsqu'il attaque et une vérification de la collision doit être effectuée au bon moment pour détecter si le joueur est touché
+- [x] Si le joueur est touché, il devra perdre un point de vie et un FX devra être joué afin de lui donner un retour évident qu'il a été attaqué
+- [x] Une fois l'attaque terminée, l'ennemi doit revenir à sa position par défaut (pas trop près / pas trop loin du joueur)
 
 ### Mort :
 - [x] Si un personnage (joueur ou ennemi) perd toute sa vie, l'animation de mort est jouée.

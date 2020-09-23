@@ -71,14 +71,15 @@ void AGladiatorUE4Character::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FScriptDelegate CollisionBeginOverlap;
-	CollisionBeginOverlap.BindUFunction(this, TEXT("TryToInflictDammageToEnnemyCallBack"));
-	MeshTool->OnComponentBeginOverlap.Add(CollisionBeginOverlap);
+	FScriptDelegate CollisionBeginOverlapWeapon;
+	CollisionBeginOverlapWeapon.BindUFunction(this, TEXT("TryToInflictDammageToEnnemyCallBack"));
+	MeshTool->OnComponentBeginOverlap.Add(CollisionBeginOverlapWeapon);
+
+	FScriptDelegate CollisionBeginOverlapShield;
+	CollisionBeginOverlapShield.BindUFunction(this, TEXT("BlockAttackCallBack"));
+	MeshShield->OnComponentBeginOverlap.Add(CollisionBeginOverlapShield);
 
 	auto Material = GetMesh()->GetMaterial(0);
-	DynMaterial = UMaterialInstanceDynamic::Create(Material, this);
-	GetMesh()->SetMaterial(0, DynMaterial);
-
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -149,11 +150,29 @@ void AGladiatorUE4Character::MoveForward(float Value)
 
 void AGladiatorUE4Character::TryToInflictDammageToEnnemyCallBack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (OtherComp->ComponentHasTag(TEXT("Shield")))
+		return;
+
 	AGladiatorUE4Character* pEnnemyActor = Cast<AGladiatorUE4Character>(OtherActor);
 
 	if (pEnnemyActor)
 	{
 		pEnnemyActor->TakeDammage(1);
+	}
+}
+
+void AGladiatorUE4Character::BlockAttackCallBack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AGladiatorUE4Character* pEnnemyActor = Cast<AGladiatorUE4Character>(OtherActor);
+
+	pEnnemyActor->StopAttack();
+	pEnnemyActor->StopInflictDamage();
+
+	AEnnemy* pEnnemy = Cast<AEnnemy>(OtherActor);
+
+	if (pEnnemy)
+	{
+		pEnnemy->GiveOrderToRetreat();
 	}
 }
 
@@ -167,6 +186,7 @@ void AGladiatorUE4Character::StopDefense_Implementation()
 {
 	IsBlock = false;
 	Controller->SetIgnoreMoveInput(false);
+	MeshShield->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AGladiatorUE4Character::Attack_Implementation()
@@ -179,6 +199,7 @@ void AGladiatorUE4Character::Block_Implementation()
 {
 	IsBlock = true;
 	Controller->SetIgnoreMoveInput(true);
+	MeshShield->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void AGladiatorUE4Character::StartInflictDamage() noexcept
@@ -191,14 +212,19 @@ void AGladiatorUE4Character::StopInflictDamage() noexcept
 	MeshTool->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+bool AGladiatorUE4Character::CanBlockAttack() noexcept
+{
+	return IsBlock;
+}
+
 void AGladiatorUE4Character::StopNotifieDamage()
 {
-	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Black);
+	GetMesh()->SetVectorParameterValueOnMaterials(FName(TEXT("AdditionalColor")), FVector(FLinearColor::Black));
 }
 
 void AGladiatorUE4Character::NotifieDamage()
 {
-	DynMaterial->SetVectorParameterValue(FName(TEXT("AdditionalColor")), FLinearColor::Red);
+	GetMesh()->SetVectorParameterValueOnMaterials(FName(TEXT("AdditionalColor")), FVector(FLinearColor::Red));
 }
 
 
