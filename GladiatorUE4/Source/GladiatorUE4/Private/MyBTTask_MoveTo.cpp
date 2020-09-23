@@ -24,6 +24,8 @@ EBTNodeResult::Type UMyBTTask_MoveTo::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 void UMyBTTask_MoveTo::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
+
 	//Get self object and cast it to APawn
 	APawn* pSelfPawn = Cast<APawn>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("SelfActor"));
 	const float acceptableRadius = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(m_rangeZoneToStop.SelectedKeyName);

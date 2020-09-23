@@ -56,3 +56,15 @@ void AEnnemy::Block_Implementation()
 	Super::Block_Implementation();
 	//Cast<AAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(TEXT("IsAttacking"), IsAttack);
 }
+
+void AEnnemy::GiveOrderToCharge() noexcept
+{
+	IsCharge = true;
+	Cast<AAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(TEXT("IsCharge"), IsCharge);
+}
+
+void AEnnemy::GiveOrderToRetreat() noexcept
+{
+	IsCharge = false;
+	Cast<AAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(TEXT("IsCharge"), IsCharge);
+}

@@ -24,6 +24,14 @@ public:
 
 protected:
 
+	/**
+	 * @brief If set, gladiator will charge and then attack
+	*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = StateMachine)
+	bool IsCharge = false;
+
+protected:
+
 	virtual void Kill() noexcept override;
 
 	virtual void StopAttack_Implementation()  override;
@@ -40,4 +48,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void GiveOrderToCharge() noexcept;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void GiveOrderToRetreat() noexcept;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	bool IsCharging() const noexcept { return IsCharge; }
 };

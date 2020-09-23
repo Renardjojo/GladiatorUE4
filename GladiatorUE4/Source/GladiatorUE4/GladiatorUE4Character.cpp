@@ -78,6 +78,7 @@ void AGladiatorUE4Character::BeginPlay()
 	auto Material = GetMesh()->GetMaterial(0);
 	DynMaterial = UMaterialInstanceDynamic::Create(Material, this);
 	GetMesh()->SetMaterial(0, DynMaterial);
+
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -54,7 +54,7 @@ void AGladiatorUE4GameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!waitingForNextAttack && CurrentAttackingEnnemy != nullptr && !CurrentAttackingEnnemy->IsAttack)
+	if (!waitingForNextAttack && CurrentAttackingEnnemy != nullptr && !CurrentAttackingEnnemy->IsCharging())
 	{
 		waitingForNextAttack = true;
 	}
@@ -74,18 +74,18 @@ void AGladiatorUE4GameMode::Tick(float DeltaSeconds)
 		}
 	}
 
-	if (CurrentAttackingEnnemy != nullptr && CurrentAttackingEnnemy->IsPendingKill())
+	if (CurrentAttackingEnnemy != nullptr && (CurrentAttackingEnnemy->IsPendingKill() || CurrentAttackingEnnemy->GetLife() == 0))
 	{
 		CurrentAttackingEnnemy = nullptr;
 	}
 
-	if (CurrentAttackingEnnemy == nullptr || !CurrentAttackingEnnemy->IsAttack)
+	if (CurrentAttackingEnnemy == nullptr || !CurrentAttackingEnnemy->IsCharging())
 	{
 		CurrentAttackingEnnemy = nullptr;
 
 		for (size_t i = 0; i < EnnemyManager.Num(); i++)
 		{
-			if (EnnemyManager[i]->IsPendingKill())
+			if (EnnemyManager[i]->IsPendingKill() || EnnemyManager[i]->GetLife() == 0)
 			{
 				EnnemyManager.RemoveAtSwap(i);
 
@@ -99,7 +99,7 @@ void AGladiatorUE4GameMode::Tick(float DeltaSeconds)
 			if (pEnnemie->CanAttack)
 			{
 				CurrentAttackingEnnemy = pEnnemie;
-				pEnnemie->Attack();
+				pEnnemie->GiveOrderToCharge();
 
 				if (GEngine)
 					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("Ok %d"), CurrentAttackingEnnemy->IsAttack));

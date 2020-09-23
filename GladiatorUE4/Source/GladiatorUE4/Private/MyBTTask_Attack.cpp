@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h" //AController
 #include "AIController.h" //AAIController
 #include "GladiatorUE4/GladiatorUE4Character.h"
+#include "Ennemy.h"
 
 /*Debug*/
 #include "Engine/GameEngine.h" //AddOnScreenDebugMessage
@@ -71,7 +72,7 @@ void UMyBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 
 	if (pAIController->GetMoveStatus() == EPathFollowingStatus::Idle)
 	{
-		Cast<AGladiatorUE4Character>(pSelfPawn)->Attack();
+		Cast<AEnnemy>(pSelfPawn)->Attack();
 
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	}
