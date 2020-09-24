@@ -97,7 +97,7 @@ EZonePlayerState UMyBTTask_MoveToContactZone::checkWhereIsPlayerFromContactZone(
 
 	if (squaredDistWithEnnemy <= (acceptableRadius - zoneSize) * (acceptableRadius - zoneSize))
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TooClose"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TooClose"));
 		return EZonePlayerState::TooClose;
 	}
 	else if (squaredDistWithEnnemy >= (acceptableRadius + zoneSize) * (acceptableRadius + zoneSize))

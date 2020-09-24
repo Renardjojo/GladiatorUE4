@@ -7,7 +7,6 @@
 #include "AIController.h" //AAIController
 #include "BrainComponent.h" //BrainComponent
 #include "BehaviorTree/BlackboardComponent.h" //BlackboardComponent
-#include "GameFramework/CharacterMovementComponent.h" //UCharacterMovementComponent
 
 // Sets default values
 AEnnemy::AEnnemy()
@@ -22,6 +21,12 @@ void AEnnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+// Called to bind functionality to input
+void AEnnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
 void AEnnemy::Kill() noexcept
 {
 	Super::Kill();
@@ -32,7 +37,6 @@ void AEnnemy::StopAttack_Implementation()
 {
 	Super::StopAttack_Implementation();
 	Cast<AAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(TEXT("IsAttacking"), IsAttack);
-	//GetCharacterMovement()->Ignor
 }
 
 void AEnnemy::StopDefense_Implementation()

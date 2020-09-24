@@ -98,26 +98,26 @@ void AGladiatorUE4Character::BlockAttackCallBack(UPrimitiveComponent* Overlapped
 void AGladiatorUE4Character::StopAttack_Implementation()
 {
 	IsAttack = false;
-	GetController()->SetIgnoreMoveInput(false);
+	Controller->SetIgnoreMoveInput(false);
 }
 
 void AGladiatorUE4Character::StopDefense_Implementation()
 {
 	IsBlock = false;
-	GetController()->SetIgnoreMoveInput(false);
+	Controller->SetIgnoreMoveInput(false);
 	MeshShield->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AGladiatorUE4Character::Attack_Implementation()
 {
 	IsAttack = true;
-	GetController()->SetIgnoreMoveInput(true);
+	Controller->SetIgnoreMoveInput(true);
 }
 
 void AGladiatorUE4Character::Block_Implementation()
 {
 	IsBlock = true;
-	GetController()->SetIgnoreMoveInput(true);
+	Controller->SetIgnoreMoveInput(true);
 	MeshShield->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 

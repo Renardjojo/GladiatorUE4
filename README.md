@@ -45,9 +45,9 @@ Projet UE4 GP2
 - [x] Une fois l'animation terminée, le personnage reste sur la dernière image (couché au sol), les collisions et la logique sont désactivés (le personnage devient simplement un élément graphique d'arrière-plan)
 
 ### Game state :
-- [ ] Lorsque tous les ennemis sont vaincus et que le joueur est toujours en vie, le jeu doit informer le joueur qu'il a gagné (affiche un texte «You Win», par exemple), et le jeu devrait être réinitialisé (joueur et ennemis respawn)
-- [ ] Lorsque le joueur perd toute sa vie, le jeu doit l'informer qu'il a perdu et le jeu doit être réinitialisé
+- [x] Lorsque tous les ennemis sont vaincus et que le joueur est toujours en vie, le jeu doit informer le joueur qu'il a gagné (affiche un texte «You Win», par exemple), et le jeu devrait être réinitialisé (joueur et ennemis respawn)
+- [x] Lorsque le joueur perd toute sa vie, le jeu doit l'informer qu'il a perdu et le jeu doit être réinitialisé
 
 ### HUD :
-- [ ] Affichez, à votre guise, la santé du joueur (texte, jauge…)
-- [ ] La mise à jour du HUD doit être effectuée à l’aide de delegates et d’events
+- [x] Affichez, à votre guise, la santé du joueur (texte, jauge…)
+- [x] La mise à jour du HUD doit être effectuée à l’aide de delegates et d’events
