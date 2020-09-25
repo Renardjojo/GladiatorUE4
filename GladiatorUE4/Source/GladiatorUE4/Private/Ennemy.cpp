@@ -13,19 +13,14 @@
 AEnnemy::AEnnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called every frame
-void AEnnemy::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void AEnnemy::Kill() noexcept
 {
 	Super::Kill();
 	Cast<AAIController>(GetController())->BrainComponent->StopLogic("Death");
+	Cast<AAIController>(GetController())->ClearFocus(EAIFocusPriority::Default);
 }
 
 void AEnnemy::StopAttack_Implementation()

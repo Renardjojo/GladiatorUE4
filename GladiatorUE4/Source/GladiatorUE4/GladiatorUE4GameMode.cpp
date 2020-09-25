@@ -5,6 +5,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Ennemy.h"
 #include "GameFramework/Character.h"
+#include "Math/UnrealMathUtility.h"
 
 /*Debug*/
 #include "Engine/GameEngine.h" //AddOnScreenDebugMessage
@@ -12,11 +13,11 @@
 AGladiatorUE4GameMode::AGladiatorUE4GameMode()
 {
 	// set default pawn class to our Blueprinted character
-	/*static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
-	if (PlayerPawnBPClass.Class != NULL)
-	{
-		DefaultPawnClass = PlayerPawnBPClass.Class;
-	}*/
+	//static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
+	//if (PlayerPawnBPClass.Class != NULL)
+	//{
+	//	DefaultPawnClass = PlayerPawnBPClass.Class;
+	//}
 
 	static ConstructorHelpers::FClassFinder<AEnnemy> EnnemyBPClass(TEXT("/Game/Ennemy/Ennemy"));
 	if (EnnemyBPClass.Class != NULL)
@@ -39,13 +40,18 @@ void AGladiatorUE4GameMode::InitGame(const FString& MapName, const FString& Opti
 
 	for (size_t i = 0; i < m_numberOfEnnemyAtWolrdInit; i++)
 	{
-		Location = FVector{ FMath::RandPointInCircle(1000.f), 200.0f };
+		Location = FVector{ FMath::RandPointInCircle(500.f), 200.0f };
 		Rotation = FRotator{ 0.0f, 0.0f, 0.0f };
 		
 		FAttachmentTransformRules aRules(EAttachmentRule::KeepRelative, true);
 
 		AEnnemy* pEnnemy = GetWorld()->SpawnActor<AEnnemy>(DefaultEnnemyClass.Get(), Location, Rotation, SpawnInfo);
-		EnnemyManager.Add(pEnnemy);	
+
+		if (pEnnemy != nullptr && IsValid(pEnnemy))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spawn Ennemy"));
+			EnnemyManager.Add(pEnnemy);	
+		}
 	}
 }
 
@@ -84,7 +90,7 @@ void AGladiatorUE4GameMode::Tick(float DeltaSeconds)
 
 		for (size_t i = 0; i < EnnemyManager.Num(); i++)
 		{
-			if (EnnemyManager[i]->IsPendingKill() || EnnemyManager[i]->GetLife() == 0)
+			if (!EnnemyManager[i]->IsValidLowLevel() || EnnemyManager[i]->IsPendingKill() || EnnemyManager[i]->GetLife() == 0)
 			{
 				EnnemyManager.RemoveAtSwap(i);
 
@@ -93,17 +99,21 @@ void AGladiatorUE4GameMode::Tick(float DeltaSeconds)
 			}
 		}
 
+		TArray<AEnnemy*> EnnemyThatCanAttck;
 		for (AEnnemy* pEnnemie : EnnemyManager)
 		{
 			if (pEnnemie->CanAttack)
 			{
-				CurrentAttackingEnnemy = pEnnemie;
-				pEnnemie->GiveOrderToCharge();
-
-				if (GEngine)
-					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("Ok %d"), CurrentAttackingEnnemy->IsAttack));
-				break;
+				EnnemyThatCanAttck.Add(pEnnemie);
 			}
+		}
+	
+		//Choose random attacker
+		if (EnnemyThatCanAttck.Num() != 0)
+		{
+			uint8 indexEnnemy = (EnnemyThatCanAttck.Num() == 1 ? FMath::RandRange(0, EnnemyThatCanAttck.Num() - 1) : 0);
+			EnnemyThatCanAttck[indexEnnemy]->GiveOrderToCharge();
+			waitingForNextAttack = true;
 		}
 	}
 }

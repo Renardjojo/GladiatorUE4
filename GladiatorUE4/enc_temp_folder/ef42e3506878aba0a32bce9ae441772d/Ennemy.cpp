@@ -7,24 +7,13 @@
 #include "AIController.h" //AAIController
 #include "BrainComponent.h" //BrainComponent
 #include "BehaviorTree/BlackboardComponent.h" //BlackboardComponent
+#include "GameFramework/CharacterMovementComponent.h" //UCharacterMovementComponent
 
 // Sets default values
 AEnnemy::AEnnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called every frame
-void AEnnemy::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void AEnnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void AEnnemy::Kill() noexcept
@@ -37,6 +26,7 @@ void AEnnemy::StopAttack_Implementation()
 {
 	Super::StopAttack_Implementation();
 	Cast<AAIController>(GetController())->GetBlackboardComponent()->SetValueAsBool(TEXT("IsAttacking"), IsAttack);
+	//GetCharacterMovement()->Ignor
 }
 
 void AEnnemy::StopDefense_Implementation()

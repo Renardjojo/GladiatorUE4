@@ -34,19 +34,24 @@ EBTNodeResult::Type UMyBTTask_MoveToContactZone::ExecuteTask(UBehaviorTreeCompon
 	case EZonePlayerState::TooClose:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", false);
 		Cast<AEnnemy>(pSelfPawn)->CanAttack = true;
-		//pSelfPawn->bUseControllerRotationYaw = false;
+		pSelfPawn->bUseControllerRotationYaw = false;
+		rotateToLookPlayer(OwnerComp, pSelfPawn, pEnnemyActor);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TooClose"));
 		return runAway(OwnerComp, pSelfPawn, pEnnemyActor, acceptableRadius) ? EBTNodeResult::Failed : EBTNodeResult::Aborted;
 
 	case EZonePlayerState::Inside:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", true);
 		Cast<AEnnemy>(pSelfPawn)->CanAttack = true;
-		//pSelfPawn->bUseControllerRotationYaw = false;
+		pSelfPawn->bUseControllerRotationYaw = false;
+		rotateToLookPlayer(OwnerComp, pSelfPawn, pEnnemyActor);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Inside"));
 		return EBTNodeResult::Succeeded;
 
 	case EZonePlayerState::Outside:
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool("IsOnContactZone", false);
 		Cast<AEnnemy>(pSelfPawn)->CanAttack = false;
-		//pSelfPawn->bUseControllerRotationYaw = false;
+		pSelfPawn->bUseControllerRotationYaw = false;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Outside"));
 		return moveToContactZone(OwnerComp, pSelfPawn, pEnnemyActor, acceptableRadius) ? EBTNodeResult::Failed : EBTNodeResult::Aborted;
 
 	default:
@@ -64,8 +69,7 @@ bool UMyBTTask_MoveToContactZone::moveToContactZone(UBehaviorTreeComponent& Owne
 		return false;
 	}
 
-	pAIController->MoveToActor(pEnnemyActor, acceptableRadius - zoneSize, m_stopOnOverlap, m_usePathfinding, m_canStrafe);
-	//rotateToLookPlayer(OwnerComp, pSelfPawn, pEnnemyActor);
+	pAIController->MoveToActor(pEnnemyActor, acceptableRadius - zoneSize, false, false, false);
 
 	return true;
 }
@@ -83,9 +87,15 @@ bool UMyBTTask_MoveToContactZone::runAway(UBehaviorTreeComponent& OwnerComp, APa
 	FVector direction = pSelfPawn->GetActorLocation() - pEnnemyActor->GetActorLocation();
 	direction.Normalize();
 
-	pAIController->MoveToLocation((direction * (acceptableRadius - zoneSize)) + pSelfPawn->GetActorLocation());
+	//EPathFollowingRequestResult::Type MoveRequestResult;
 
-	//rotateToLookPlayer(OwnerComp, pSelfPawn, pEnnemyActor);
+	//do
+	//{
+		/*MoveRequestResult = */pAIController->MoveToLocation((direction * zoneSize) + pSelfPawn->GetActorLocation());
+		//direction.RotateAngleAxis(10, FVector::UpVector);
+
+	//} while (MoveRequestResult == EPathFollowingRequestResult::Failed);
+
 
 	return true;
 }
@@ -97,7 +107,7 @@ EZonePlayerState UMyBTTask_MoveToContactZone::checkWhereIsPlayerFromContactZone(
 
 	if (squaredDistWithEnnemy <= (acceptableRadius - zoneSize) * (acceptableRadius - zoneSize))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TooClose"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("TooClose"));
 		return EZonePlayerState::TooClose;
 	}
 	else if (squaredDistWithEnnemy >= (acceptableRadius + zoneSize) * (acceptableRadius + zoneSize))

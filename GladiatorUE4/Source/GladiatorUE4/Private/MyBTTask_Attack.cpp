@@ -9,6 +9,8 @@
 #include "GameFramework/Controller.h" //AController
 #include "AIController.h" //AAIController
 #include "GladiatorUE4/GladiatorUE4Character.h"
+#include "Kismet/KismetMathLibrary.h" //FindLookAtRotation
+#include "Kismet/KismetMathLibrary.h"
 #include "Ennemy.h"
 
 /*Debug*/
@@ -45,6 +47,14 @@ EBTNodeResult::Type UMyBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	return EBTNodeResult::InProgress;
 }
 
+void rotateToLookPlayer(APawn* pSelfPawn, AActor* pEnnemyActor)
+{
+	//Alway face to the player
+	FRotator rotation = UKismetMathLibrary::FindLookAtRotation(pSelfPawn->GetActorLocation(), pEnnemyActor->GetActorLocation());
+	rotation = FRotator::MakeFromEuler(rotation.Euler() * FVector::UpVector);
+	pSelfPawn->SetActorRotation(rotation);
+}
+
 void UMyBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	//Get self object and cast it to APawn
@@ -69,6 +79,8 @@ void UMyBTTask_Attack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 	}
+
+	rotateToLookPlayer(pSelfPawn, pEnnemyActor);
 
 	if (pAIController->GetMoveStatus() == EPathFollowingStatus::Idle)
 	{

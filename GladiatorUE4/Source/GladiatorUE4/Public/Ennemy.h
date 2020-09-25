@@ -43,8 +43,6 @@ protected:
 	virtual void Block_Implementation()  override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "State")
 	void GiveOrderToCharge() noexcept;
