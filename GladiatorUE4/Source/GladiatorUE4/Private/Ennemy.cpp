@@ -19,8 +19,8 @@ AEnnemy::AEnnemy()
 void AEnnemy::Kill() noexcept
 {
 	Super::Kill();
+	Cast<AAIController>(GetController())->K2_ClearFocus();
 	Cast<AAIController>(GetController())->BrainComponent->StopLogic("Death");
-	Cast<AAIController>(GetController())->ClearFocus(EAIFocusPriority::Default);
 }
 
 void AEnnemy::StopAttack_Implementation()
