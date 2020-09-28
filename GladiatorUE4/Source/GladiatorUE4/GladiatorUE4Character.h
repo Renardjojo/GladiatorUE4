@@ -68,6 +68,9 @@ protected:
 	virtual void Kill() noexcept;
 
 	UFUNCTION(BlueprintCallable, Category = "State")
+	void DoNotTakeDammage() noexcept;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
 	void ImmuniseForDammage() noexcept;
 
 	UFUNCTION(BlueprintCallable, Category = "State")

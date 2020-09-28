@@ -1,5 +1,18 @@
 # GladiatorUE4
-Projet UE4 GP2
+UE4 project game programming second year. Made by Six Jonathan for introduction to Unreal cpp. 2 weeks
+
+Incarne a gladiator and kill your ennemies in amazing arena !
+
+## Screenshot:
+![](Screenshots/ScreenShot00002.png)
+![](Screenshots/ScreenShot00007.png)
+
+## Command :
+WASD : move
+Left clic : attack
+Right click : block
+K : debug/FPS
+Escape : Quite
 
 ## TODO (French) : 
 ### Caméra :
@@ -30,13 +43,13 @@ Projet UE4 GP2
 ### IA - Position des ennemis :
 - [x] En tant que groupe, ils ne restent pas trop loin du joueur, mais pas trop près pour des raisons évidentes de sécurité (pour éviter d'être  acilement attaqué par le joueur)
 - [x] Chaque ennemi doit avoir une vue non obstruée du joueur, c'est-à-dire que pour chaque ennemi, la ligne de mire entre cet ennemi et le joueur ne doit pas se croiser avec d'autres ennemis
-- [+/-] Sauf pendant l'attaque, l'ennemi doit toujours faire face au joueur, à tout moment. Par conséquent, les ennemis sont autorisés à se dégager et à reculer
+- [+] Sauf pendant l'attaque, l'ennemi doit toujours faire face au joueur, à tout moment. Par conséquent, les ennemis sont autorisés à se dégager et à reculer
 
 ### IA - Ennemis attaque :
 - [x] Toutes les secondes (cette période devrait être une valeur ajustable dans l'éditeur), un ennemi est choisi pour attaquer le joueur
-- [+/-] L’algorithme qui choisit l’ennemi pour attaquer appartient aux développeurs, dans la mesure où il rend le jeu aussi amusant que possible (choisissez un ennemi aléatoire, choisissez l’ennemi le plus proche, celui situé à l’arrière du joueur, le dernier attaquant récent, une combinaison des règles précédentes…)
+- [+] L’algorithme qui choisit l’ennemi pour attaquer appartient aux développeurs, dans la mesure où il rend le jeu aussi amusant que possible (choisissez un ennemi aléatoire, choisissez l’ennemi le plus proche, celui situé à l’arrière du joueur, le dernier attaquant récent, une combinaison des règles précédentes…)
 - [x] L'attaquant choisi doit se déplacer vers le joueur, suffisamment près pour que l'attaque puisse l'atteindre. Il devrait alors déclencher l'attaque
-- [+/-] Comme le joueur, l'ennemi ne peut pas se déplacer lorsqu'il attaque et une vérification de la collision doit être effectuée au bon moment pour détecter si le joueur est touché
+- [+] Comme le joueur, l'ennemi ne peut pas se déplacer lorsqu'il attaque et une vérification de la collision doit être effectuée au bon moment pour détecter si le joueur est touché
 - [x] Si le joueur est touché, il devra perdre un point de vie et un FX devra être joué afin de lui donner un retour évident qu'il a été attaqué
 - [x] Une fois l'attaque terminée, l'ennemi doit revenir à sa position par défaut (pas trop près / pas trop loin du joueur)
 

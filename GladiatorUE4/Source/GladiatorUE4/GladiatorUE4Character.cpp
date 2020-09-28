@@ -187,6 +187,11 @@ void AGladiatorUE4Character::Kill() noexcept
 	m_life = 0;
 }
 
+void AGladiatorUE4Character::DoNotTakeDammage() noexcept
+{
+	m_isImunised = true; /*TODO: Can be optimize if disable collision*/
+}
+
 void AGladiatorUE4Character::ImmuniseForDammage() noexcept
 {
 	m_isImunised = true; /*TODO: Can be optimize if disable collision*/
