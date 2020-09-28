@@ -75,10 +75,11 @@ GladiatorUE4/Plugins/*/Intermediate/*
 GladiatorUE4/DerivedDataCache/*
 
 # Ignore asset for now
-GladiatorUE4/Content/Arena/*
-GladiatorUE4/Content/Arena/Geometry/*
-GladiatorUE4/Content/Arena/Mannequin/*
-GladiatorUE4/Content/Arena/Sound/*
-GladiatorUE4/Content/Arena/StarterContent/*
-GladiatorUE4/Content/Arena/ThirdPerson/*
-GladiatorUE4/Content/Arena/Characters/*
+GladiatorUE4/Bin/*
+#GladiatorUE4/Content/Arena/*
+#GladiatorUE4/Content/Arena/Geometry/*
+#GladiatorUE4/Content/Arena/Mannequin/*
+#GladiatorUE4/Content/Arena/Sound/*
+#GladiatorUE4/Content/Arena/StarterContent/*
+#GladiatorUE4/Content/Arena/ThirdPerson/*
+#GladiatorUE4/Content/Arena/Characters/*
